@@ -29,19 +29,20 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
     setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
   }
 
-  const { txt, importance } = filterByToEdit
+  const { txt, importance, status } = filterByToEdit
+
   return (
-    <section className='todo-filter'>
+    <section className='todo-filter' name='status' id='status' value={status} onChange={handleChange}>
       <h2>Filter Todos</h2>
       <form>
         <input value={txt} onChange={handleChange} type='search' placeholder='By Txt' id='txt' name='txt' />
         <label htmlFor='importance'>Importance: </label>
         <input value={importance} onChange={handleChange} type='number' placeholder='By Importance' id='importance' name='importance' />
 
-        <select name='select-todos' id='select-todos'>
-          <option value='all'>All Todos</option>
-          <option value='active'>Active Todos</option>
-          <option value='done'>Done Todos</option>
+        <select name='status' onChange={handleChange} id='status'>
+          <option value={'all'}>All Todos</option>
+          <option value={'active'}>Active Todos</option>
+          <option value={'done'}>Done Todos</option>
         </select>
       </form>
     </section>
