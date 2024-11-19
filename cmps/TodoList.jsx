@@ -1,12 +1,12 @@
 import { TodoPreview } from './TodoPreview.jsx'
 const { Link } = ReactRouterDOM
 
-export function TodoList({ todos, onRemoveTodo, onToggleTodo }) {
+export function TodoList({ todos, onRemoveTodo, onToggleTodo, onColorTodo }) {
   return (
     <ul className='todo-list'>
       {todos.map((todo) => (
         <li key={todo._id}>
-          <TodoPreview todo={todo} onToggleTodo={() => onToggleTodo(todo)} />
+          <TodoPreview todo={todo} onColorTodo={onColorTodo} onToggleTodo={() => onToggleTodo(todo)} />
           <section className='btn-section'>
             <button onClick={() => onRemoveTodo(todo._id)}>Remove</button>
             <button>
@@ -21,5 +21,3 @@ export function TodoList({ todos, onRemoveTodo, onToggleTodo }) {
     </ul>
   )
 }
-
-// ;

@@ -1,7 +1,7 @@
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo.service.js'
-import { loadTodos, removeTodo, addTodo, updateTodo } from '../store/actions/todo.actions.js'
+import { loadTodos, removeTodo, toggleTodo, colorTodo } from '../store/actions/todo.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 const { useState, useEffect } = React
@@ -12,6 +12,7 @@ const { Link, useSearchParams } = ReactRouterDOM
 export function TodoIndex() {
   // const [todos, setTodos] = useState(null)
   const todos = useSelector((storeState) => storeState.todos)
+  // console.log(todos)
 
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
@@ -43,16 +44,25 @@ export function TodoIndex() {
   }
 
   function onToggleTodo(todo) {
-    const todoToSave = { ...todo, isDone: !todo.isDone }
-    todoService
-      .save(todoToSave)
+    toggleTodo(todo)
       .then((savedTodo) => {
-        setTodos((prevTodos) => prevTodos.map((currTodo) => (currTodo._id !== todo._id ? currTodo : { ...savedTodo })))
         showSuccessMsg(`Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`)
       })
       .catch((err) => {
         console.log('err:', err)
-        showErrorMsg('Cannot toggle todo ' + todoId)
+        showErrorMsg('Cannot toggle todo ' + todo._id)
+      })
+  }
+
+  function onColorTodo(todo, color, bgColor) {
+    console.log('colored')
+    colorTodo(todo, color, bgColor)
+      .then(() => {
+        showSuccessMsg(`Todo is get colored'}`)
+      })
+      .catch((err) => {
+        console.log('err:', err)
+        showErrorMsg('Cannot colored todo ' + todo._id)
       })
   }
 
@@ -66,7 +76,7 @@ export function TodoIndex() {
         </Link>
       </div>
       <h2>Todos List</h2>
-      <TodoList todos={todos} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
+      <TodoList todos={todos} onColorTodo={onColorTodo} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
       <hr />
     </section>
   )

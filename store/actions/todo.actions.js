@@ -37,3 +37,33 @@ export function saveTodo(todo) {
       throw err
     })
 }
+
+export function toggleTodo(todo) {
+  const updatedTodo = { ...todo, isDone: !todo.isDone }
+
+  return todoService
+    .save(updatedTodo)
+    .then((savedTodo) => {
+      store.dispatch({ type: UPDATE_TODO, todo: savedTodo })
+      return savedTodo
+    })
+    .catch((err) => {
+      console.log('Todo action -> Cannot toggle todo')
+      throw err
+    })
+}
+
+export function colorTodo(todo, color, bgColor) {
+  const updatedTodo = { ...todo, style: { ...todo.style, color, bgColor } }
+
+  return todoService
+    .save(updatedTodo)
+    .then((savedTodo) => {
+      store.dispatch({ type: UPDATE_TODO, todo: savedTodo })
+      return savedTodo
+    })
+    .catch((err) => {
+      console.log('Todo action -> Cannot toggle todo')
+      throw err
+    })
+}

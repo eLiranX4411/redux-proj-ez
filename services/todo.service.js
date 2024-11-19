@@ -43,18 +43,16 @@ function remove(todoId) {
 
 function save(todo) {
   if (todo._id) {
-    // TODO - updatable fields
     todo.updatedAt = Date.now()
     return storageService.put(TODO_KEY, todo)
   } else {
     todo.createdAt = todo.updatedAt = Date.now()
-
     return storageService.post(TODO_KEY, todo)
   }
 }
 
 function getEmptyTodo(txt = '', importance = 5) {
-  return { txt, importance, isDone: false }
+  return { txt, importance, isDone: false, style: { color: '', bgColor: '' } }
 }
 
 function getDefaultFilter() {
@@ -83,8 +81,8 @@ function _createTodos() {
   }
 }
 
-function _createTodo(txt, importance) {
-  const todo = getEmptyTodo(txt, importance)
+function _createTodo(txt, importance, style) {
+  const todo = getEmptyTodo(txt, importance, style)
   todo._id = utilService.makeId()
   todo.createdAt = todo.updatedAt = Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24)
   return todo
