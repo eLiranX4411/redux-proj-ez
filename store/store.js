@@ -10,6 +10,7 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 
 //* User
 export const SET_USER = 'SET_USER'
+export const SET_USER_BALANCE = 'SET_USER_BALANCE'
 
 const initialState = {
   todos: [],
@@ -34,6 +35,14 @@ function appReducer(state = initialState, cmd = {}) {
           return todo._id === cmd.todo._id ? cmd.todo : todo
         })
       }
+
+    //* User
+    case SET_USER:
+      return { ...state, loggedInUser: cmd.user }
+
+    case SET_USER_BALANCE:
+      const loggedInUser = { ...state.loggedInUser, balance: cmd.balance }
+      return { ...state, loggedInUser }
 
     default:
       return state
