@@ -1,5 +1,4 @@
 import { userService } from '../services/user.service.js'
-import { todoService } from '../services/todo.service.js'
 
 const { createStore, compose } = Redux
 
@@ -13,21 +12,28 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_USER = 'SET_USER'
 
 const initialState = {
-  todoList: [],
+  todos: [],
   isLoading: false,
   currFilterBy: {},
-  user: {}
+  loggedInUser: userService.getLoggedinUser()
 }
 
 function appReducer(state = initialState, cmd = {}) {
   switch (cmd.type) {
     //* Todos
-    case INCREMENT:
-      return { ...state, count: state.count + 1 }
-    case DECREMENT:
-      return { ...state, count: state.count - 1 }
-    case CHANGE_BY:
-      return { ...state, count: state.count + cmd.diff }
+    case SET_TODOS:
+      return { ...state, todos: cmd.todos }
+    case REMOVE_TODO:
+      return { ...state, todos: state.todos.filter((todo) => todo._id !== cmd.todoId) }
+    case ADD_TODO:
+      return { ...state, todos: [...state.todos, cmd.todo] }
+    case UPDATE_TODO:
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          return todo._id === cmd.todo._id ? cmd.todo : todo
+        })
+      }
 
     default:
       return state

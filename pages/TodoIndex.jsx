@@ -1,13 +1,17 @@
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo.service.js'
+import { loadTodos, removeTodo, addTodo, updateTodo } from '../store/actions/todo.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 const { useState, useEffect } = React
+const { useSelector, useDispatch } = ReactRedux
+
 const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
-  const [todos, setTodos] = useState(null)
+  // const [todos, setTodos] = useState(null)
+  const todos = useSelector((storeState) => storeState.todos)
 
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
@@ -17,26 +21,25 @@ export function TodoIndex() {
 
   useEffect(() => {
     setSearchParams(filterBy)
-    todoService
-      .query(filterBy)
-      .then((todos) => setTodos(todos))
+    loadTodos(filterBy)
+      .then(() => {})
       .catch((err) => {
-        console.eror('err:', err)
+        console.error('err:', err)
         showErrorMsg('Cannot load todos')
       })
   }, [filterBy])
 
   function onRemoveTodo(todoId) {
-    todoService
-      .remove(todoId)
-      .then(() => {
-        setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== todoId))
-        showSuccessMsg(`Todo removed`)
-      })
-      .catch((err) => {
-        console.log('err:', err)
-        showErrorMsg('Cannot remove todo ' + todoId)
-      })
+    confirm('Are you sure to delete?')
+      ? removeTodo(todoId)
+          .then(() => {
+            showSuccessMsg(`Todo removed`)
+          })
+          .catch((err) => {
+            console.log('err:', err)
+            showErrorMsg('Cannot remove todo ' + todoId)
+          })
+      : alert('Ok')
   }
 
   function onToggleTodo(todo) {
