@@ -1,5 +1,5 @@
-const { useState } = React
 const { Link, NavLink } = ReactRouterDOM
+const { useSelector, useDispatch } = ReactRedux
 const { useNavigate } = ReactRouter
 
 import { userService } from '../services/user.service.js'
@@ -9,7 +9,7 @@ import { showErrorMsg } from '../services/event-bus.service.js'
 
 export function AppHeader() {
   const navigate = useNavigate()
-  const [user, setUser] = useState(userService.getLoggedinUser())
+  const user = useSelector((state) => state.loggedInUser)
 
   function onLogout() {
     userService
@@ -27,13 +27,28 @@ export function AppHeader() {
     navigate('/')
   }
 
+  function getStyleByUser() {
+    const userPrefs = {
+      color: '',
+      backgroundColor: ''
+    }
+
+    if (user) {
+      userPrefs.color = user.color
+      userPrefs.backgroundColor = user.bgColor
+    }
+
+    return userPrefs
+  }
+
   return (
-    <header className='app-header full main-layout'>
+    <header className='app-header full main-layout' style={getStyleByUser()}>
       <section className='header-container'>
         <h1>React Todo App</h1>
         {user ? (
           <section>
             <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
+            <div>Balance: {user.balance}</div>
             <button onClick={onLogout}>Logout</button>
           </section>
         ) : (

@@ -1,5 +1,6 @@
 import { todoService } from '../../services/todo.service.js'
 import { SET_TODOS, REMOVE_TODO, ADD_TODO, store, UPDATE_TODO } from '../store.js'
+import { addActivity } from '../actions/user.actions.js'
 
 export function loadTodos(filterBy) {
   return todoService
@@ -16,8 +17,11 @@ export function loadTodos(filterBy) {
 export function removeTodo(todoId) {
   return todoService
     .remove(todoId)
-    .then((todos) => {
+    .then(() => {
       store.dispatch({ type: REMOVE_TODO, todoId })
+    })
+    .then(() => {
+      return addActivity(`Todo removed!`)
     })
     .catch((err) => {
       console.log('Todo action -> Cannot remove todo')
@@ -31,6 +35,10 @@ export function saveTodo(todo) {
     .save(todo)
     .then((todo) => {
       store.dispatch({ type, todo })
+    })
+    .then((res) => {
+      const actionName = todo._id ? 'Updated' : 'Added'
+      return addActivity(`${actionName} a Todo: ` + todo.txt).then(() => res)
     })
     .catch((err) => {
       console.log('Todo action -> Cannot add todo')
@@ -46,6 +54,10 @@ export function toggleTodo(todo) {
     .then((savedTodo) => {
       store.dispatch({ type: UPDATE_TODO, todo: savedTodo })
       return savedTodo
+    })
+    .then((savedTodo) => {
+      const actionName = savedTodo._id ? 'Updated' : 'Added'
+      return addActivity(`${actionName} a Todo: ` + savedTodo.txt).then(() => savedTodo)
     })
     .catch((err) => {
       console.log('Todo action -> Cannot toggle todo')

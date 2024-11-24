@@ -7,6 +7,7 @@ export const SET_TODOS = 'SET_TODOS'
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const ADD_TODO = 'ADD_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
+export const SET_IS_LOADING = 'SET_IS_LOADING'
 
 //* User
 export const SET_USER = 'SET_USER'
@@ -34,6 +35,11 @@ function appReducer(state = initialState, cmd = {}) {
         todos: state.todos.map((todo) => {
           return todo._id === cmd.todo._id ? cmd.todo : todo
         })
+      }
+    case SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: cmd.isLoading
       }
 
     //* User

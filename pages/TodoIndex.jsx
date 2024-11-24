@@ -2,17 +2,15 @@ import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo.service.js'
 import { loadTodos, removeTodo, toggleTodo, colorTodo } from '../store/actions/todo.actions.js'
+import { changeBalance } from '../store/actions/user.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
-
 const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
-  // const [todos, setTodos] = useState(null)
   const todos = useSelector((storeState) => storeState.todos)
-  // console.log(todos)
 
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
@@ -47,6 +45,16 @@ export function TodoIndex() {
     toggleTodo(todo)
       .then((savedTodo) => {
         showSuccessMsg(`Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`)
+        if (savedTodo.isDone) {
+          return changeBalance(10)
+            .then(() => {
+              console.log(`Balance update success`)
+            })
+            .catch((err) => {
+              console.log(`Error updating balance`, err)
+              showErrorMsg('Could not update balance.')
+            })
+        }
       })
       .catch((err) => {
         console.log('err:', err)

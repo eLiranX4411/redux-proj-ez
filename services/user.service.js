@@ -5,7 +5,9 @@ export const userService = {
   login,
   logout,
   signup,
-
+  updateBalance,
+  updateActivity,
+  updateUserPrefs,
   getById,
   query,
   getEmptyCredentials
@@ -33,7 +35,9 @@ function signup({ username, password, fullname }) {
   const user = { username, password, fullname }
   user.createdAt = user.updatedAt = Date.now()
   user.balance = 1000
-  user.activities = { txt: 'Added a Todo', at: Date.now() }
+  user.activities = []
+  user.color = `black`
+  user.bgColor = `white`
   return storageService.post(STORAGE_KEY, user).then(_setLoggedinUser)
 }
 
@@ -47,9 +51,63 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-  const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance, activities: user.activities }
+  const userToSave = {
+    _id: user._id,
+    fullname: user.fullname,
+    balance: user.balance,
+    activities: user.activities,
+    color: user.color,
+    bgColor: user.bgColor
+  }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
   return userToSave
+}
+
+function updateBalance(diff) {
+  const loggedInUser = getLoggedinUser()
+  if (!loggedInUser) return Promise.reject('No loggedin user')
+  return getById(loggedInUser._id).then((user) => {
+    user.balance += diff
+    return storageService.put(STORAGE_KEY, user).then((updatedUser) => {
+      _setLoggedinUser(updatedUser)
+      return updatedUser.balance
+    })
+  })
+}
+
+function updateUserPrefs(color, bgColor, fullname) {
+  const loggedInUser = getLoggedinUser()
+  if (!loggedInUser) return Promise.reject('No loggedin user')
+
+  return getById(loggedInUser._id).then((user) => {
+    user.color = color
+    user.bgColor = bgColor
+    user.fullname = fullname
+
+    return storageService.put(STORAGE_KEY, user).then((updatedUser) => {
+      _setLoggedinUser(updatedUser)
+      return updatedUser
+    })
+  })
+}
+
+function updateActivity(txt) {
+  const activity = { txt, at: Date.now() }
+  const loggedInUser = getLoggedinUser()
+  if (!loggedInUser) return Promise.reject('No loggedin user')
+
+  return getById(loggedInUser._id)
+    .then((user) => {
+      if (!user.activities) user.activities = []
+      user.activities.push(activity)
+      return user
+    })
+    .then((userToUpdate) => {
+      return storageService.put(STORAGE_KEY, userToUpdate).then((updatedUser) => {
+        _setLoggedinUser(updatedUser)
+        return updatedUser
+      })
+    })
 }
 
 function getEmptyCredentials() {
