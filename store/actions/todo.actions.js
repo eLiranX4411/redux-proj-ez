@@ -1,8 +1,9 @@
 import { todoService } from '../../services/todo.service.js'
-import { SET_TODOS, REMOVE_TODO, ADD_TODO, store, UPDATE_TODO } from '../store.js'
+import { SET_TODOS, REMOVE_TODO, ADD_TODO, store, UPDATE_TODO, SET_IS_LOADING } from '../store.js'
 import { addActivity } from '../actions/user.actions.js'
 
 export function loadTodos(filterBy) {
+  store.dispatch({ type: SET_IS_LOADING, isLoading: true })
   return todoService
     .query(filterBy)
     .then((todos) => {
@@ -11,6 +12,9 @@ export function loadTodos(filterBy) {
     .catch((err) => {
       console.log('Todo action -> Cannot load todos')
       throw err
+    })
+    .finally(() => {
+      store.dispatch({ type: SET_IS_LOADING, isLoading: false })
     })
 }
 
@@ -56,7 +60,7 @@ export function toggleTodo(todo) {
       return savedTodo
     })
     .then((savedTodo) => {
-      const actionName = savedTodo._id ? 'Updated' : 'Added'
+      const actionName = savedTodo._id ? 'Done' : ''
       return addActivity(`${actionName} a Todo: ` + savedTodo.txt).then(() => savedTodo)
     })
     .catch((err) => {

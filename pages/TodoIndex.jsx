@@ -11,6 +11,7 @@ const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
   const todos = useSelector((storeState) => storeState.todos)
+  const isLoading = useSelector((storeState) => storeState.isLoading)
 
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
@@ -63,7 +64,7 @@ export function TodoIndex() {
   }
 
   function onColorTodo(todo, color, bgColor) {
-    console.log('colored')
+    // console.log('colored')
     colorTodo(todo, color, bgColor)
       .then(() => {
         showSuccessMsg(`Todo is get colored'}`)
@@ -74,7 +75,7 @@ export function TodoIndex() {
       })
   }
 
-  if (!todos) return <div>Loading...</div>
+  if (!todos) return <div>no todos to show..</div>
   return (
     <section className='todo-index'>
       <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
@@ -84,8 +85,11 @@ export function TodoIndex() {
         </Link>
       </div>
       <h2>Todos List</h2>
-      <TodoList todos={todos} onColorTodo={onColorTodo} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
-      <hr />
+      {!isLoading ? (
+        <TodoList todos={todos} onColorTodo={onColorTodo} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
+      ) : (
+        <div>Loading...</div>
+      )}
     </section>
   )
 }
