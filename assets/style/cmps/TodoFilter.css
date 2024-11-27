@@ -1,6 +1,31 @@
 .todo-filter {
-    background-color: var(--clr2bg);
-    padding: 1em;
-    margin: 1em 0;
+  background-color: var(--primary4);
+  padding: 1rem;
+  margin: 1rem;
+
+  border: 3px solid var(--primary1);
+  border-radius: 1rem;
+  max-width: 300px;
 }
 
+.filter-form {
+  padding: 0.5rem;
+  margin: 1rem;
+}
+
+.filter-form input {
+  border: none;
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  margin: 0.3rem;
+}
+
+.filter-form input:focus,
+.filter-form select:focus {
+  outline: none;
+}
+
+.filter-form select {
+  padding: 0.3rem;
+  margin: 1rem;
+}

@@ -34,9 +34,10 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
   return (
     <section className='todo-filter' name='status' id='status' value={status} onChange={handleChange}>
       <h2>Filter Todos</h2>
-      <form>
+      <form className='filter-form'>
+        <h4>Filter By:</h4>
         <input value={txt} onChange={handleChange} type='search' placeholder='By Txt' id='txt' name='txt' />
-        <label htmlFor='importance'>Importance: </label>
+        <label htmlFor='importance'></label>
         <input value={importance} onChange={handleChange} type='number' placeholder='By Importance' id='importance' name='importance' />
 
         <select name='status' onChange={handleChange} id='status'>

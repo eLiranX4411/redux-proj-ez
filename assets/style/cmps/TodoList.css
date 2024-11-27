@@ -1,15 +1,68 @@
 .todo-list {
-    padding: 15px 0 0;
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
+  padding: 15px 0 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  min-height: 100dvh;
+}
+
+.add-btn-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.add-btn {
+  display: flex;
+  width: 150px;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--primary4);
+  border: 3px solid var(--primary2);
+  border-radius: 1rem;
+
+  transition: ease-in 0.2s;
 }
 
 .todo-list li {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: var(--clr1bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--primary4);
+  height: 30dvh;
+
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+
+  transition: ease-in 0.2s;
+}
+
+.btn-section {
+  display: flex;
+}
+
+.btn-section button {
+  padding: 0.5rem;
+  margin: 0.4rem;
+
+  border: 3px solid var(--primary3);
+  border-radius: 0.5rem;
+}
+
+.btn-section button:hover {
+  background-color: var(--primary4);
+}
+
+.add-btn:hover {
+  transform: scale(1.1);
+}
+
+.todo-list li:hover {
+  transform: scale(1.1);
+  border: 3px solid var(--primary2);
 }

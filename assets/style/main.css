@@ -8,8 +8,9 @@
 
 /* Components */
 @import 'cmps/AppHeader.css';
+@import 'cmps/AppFooter.css';
+@import 'cmps/UserDetails.css';
 @import 'cmps/UserMsg.css';
-
 @import 'cmps/TodoFilter.css';
 @import 'cmps/TodoList.css';
 @import 'cmps/TodoPreview.css';

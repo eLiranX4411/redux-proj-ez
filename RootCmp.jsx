@@ -6,6 +6,7 @@ import { AppHeader } from './cmps/AppHeader.jsx'
 import { Home } from './pages/Home.jsx'
 import { About } from './pages/About.jsx'
 import { TodoIndex } from './pages/TodoIndex.jsx'
+import { AppFooter } from './cmps/AppFooter.jsx'
 import { TodoDetails } from './pages/TodoDetails.jsx'
 import { UserDetails } from './pages/UserDetails.jsx'
 import { TodoEdit } from './pages/TodoEdit.jsx'
@@ -28,6 +29,7 @@ export function RootCmp() {
               <Route path='/todo' element={<TodoIndex />} />
             </Routes>
           </main>
+          <AppFooter />
         </section>
       </Router>
     </Provider>

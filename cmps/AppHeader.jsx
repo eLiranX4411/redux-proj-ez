@@ -42,17 +42,17 @@ export function AppHeader() {
   }
 
   return (
-    <header className='app-header full main-layout' style={getStyleByUser()}>
-      <section className='header-container'>
+    <header className='app-header main-layout full' style={getStyleByUser()}>
+      <section className='header-content'>
         <h1>React Todo App</h1>
         {user ? (
-          <section>
+          <section className='login-user'>
             <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
             <div>Balance: {user.balance}</div>
             <button onClick={onLogout}>Logout</button>
           </section>
         ) : (
-          <section>
+          <section className='signup-user'>
             <LoginSignup onSetUser={onSetUser} />
           </section>
         )}
@@ -61,8 +61,8 @@ export function AppHeader() {
           <NavLink to='/about'>About</NavLink>
           <NavLink to='/todo'>Todos</NavLink>
         </nav>
+        <UserMsg />
       </section>
-      <UserMsg />
     </header>
   )
 }

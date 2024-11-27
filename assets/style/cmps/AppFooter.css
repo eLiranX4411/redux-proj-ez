@@ -1,0 +1,9 @@
+.main-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2rem;
+  padding: 1rem;
+  box-shadow: inset 0px 3px black;
+}

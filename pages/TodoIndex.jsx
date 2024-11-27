@@ -79,12 +79,11 @@ export function TodoIndex() {
   return (
     <section className='todo-index'>
       <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
-      <div>
-        <Link to='/todo/edit' className='btn'>
+      <div className='add-btn-container'>
+        <Link to='/todo/edit' className='add-btn'>
           Add Todo
         </Link>
       </div>
-      <h2>Todos List</h2>
       {!isLoading ? (
         <TodoList todos={todos} onColorTodo={onColorTodo} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
       ) : (

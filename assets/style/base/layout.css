@@ -1,14 +1,19 @@
+.app {
+  background-color: var(--primary3);
+  min-height: 100dvh;
+}
+
 .main-layout {
   display: grid;
   grid-template-columns: 1.6rem 1fr 1.6rem;
 }
 
-.main-layout > * {
+.main-layout > *:not(.full) {
   grid-column: 2;
 }
 
-.main-layout .full {
-  grid-column: 1/-1;
+.full {
+  grid-column: 1 / -1;
 }
 
 .container {
