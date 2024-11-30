@@ -1,23 +1,26 @@
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo.service.js'
-import { loadTodos, removeTodo, toggleTodo, colorTodo } from '../store/actions/todo.actions.js'
+import { loadTodos, removeTodo, toggleTodo, colorTodo, setFilterSort } from '../store/actions/todo.actions.js'
 import { changeBalance } from '../store/actions/user.actions.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
-const { useState, useEffect } = React
+const { useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
-  const todos = useSelector((storeState) => storeState.todos)
-  const isLoading = useSelector((storeState) => storeState.isLoading)
+  const todos = useSelector((storeState) => storeState.todoModule.todos)
+  const isLoading = useSelector((storeState) => storeState.todoModule.isLoading)
 
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
+  const filterBy = useSelector((storeState) => storeState.todoModule.filterBy)
   const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
-  const [filterBy, setFilterBy] = useState(defaultFilter)
+  useEffect(() => {
+    onSetFilterSort({ ...defaultFilter })
+  }, [])
 
   useEffect(() => {
     setSearchParams(filterBy)
@@ -28,6 +31,10 @@ export function TodoIndex() {
         showErrorMsg('Cannot load todos')
       })
   }, [filterBy])
+
+  function onSetFilterSort(filterSort) {
+    setFilterSort({ ...filterSort })
+  }
 
   function onRemoveTodo(todoId) {
     confirm('Are you sure to delete?')
@@ -78,7 +85,7 @@ export function TodoIndex() {
   if (!todos) return <div>no todos to show..</div>
   return (
     <section className='todo-index'>
-      <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
+      <TodoFilter filterBy={defaultFilter} onSetFilterBy={onSetFilterSort} />
       <div className='add-btn-container'>
         <Link to='/todo/edit' className='add-btn'>
           Add Todo

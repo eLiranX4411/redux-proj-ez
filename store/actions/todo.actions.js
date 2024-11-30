@@ -1,5 +1,6 @@
 import { todoService } from '../../services/todo.service.js'
-import { SET_TODOS, REMOVE_TODO, ADD_TODO, store, UPDATE_TODO, SET_IS_LOADING } from '../store.js'
+import { store } from '../store.js'
+import { SET_TODOS, REMOVE_TODO, ADD_TODO, UPDATE_TODO, SET_IS_LOADING, SET_FILTER_BY } from '../reducers/todo.reducer.js'
 import { addActivity } from '../actions/user.actions.js'
 
 export function loadTodos(filterBy) {
@@ -67,6 +68,14 @@ export function toggleTodo(todo) {
       console.log('Todo action -> Cannot toggle todo')
       throw err
     })
+}
+
+export function setFilterSort(filterBy) {
+  const cmd = {
+    type: SET_FILTER_BY,
+    filterBy
+  }
+  store.dispatch(cmd)
 }
 
 export function colorTodo(todo, color, bgColor) {

@@ -35,6 +35,16 @@ function query(filterBy = {}) {
       }
     }
 
+    if (filterBy.sort) {
+      if (filterBy.sort === 'txt') {
+        todos = todos.sort((a, b) => a.txt.localeCompare(b.txt))
+      }
+
+      if (filterBy.status === 'createdAt') {
+        todos = todos.sort((a, b) => a.createdAt - b.createdAt)
+      }
+    }
+
     return todos
   })
 }
@@ -64,14 +74,16 @@ function getEmptyTodo(txt = '', importance = 5) {
 }
 
 function getDefaultFilter() {
-  return { txt: '', importance: 0, status: '' }
+  return { txt: '', importance: 0, status: '', sort: '' }
 }
 
 function getFilterFromSearchParams(searchParams) {
-  const defaultFilter = getDefaultFilter()
-  const filterBy = {}
-  for (const field in defaultFilter) {
-    filterBy[field] = searchParams.get(field) || ''
+  const filterBy = {
+    txt: searchParams.get('txt') || '',
+    status: searchParams.get('status') || 'all',
+    importance: +searchParams.get('importance') || 0,
+    sort: searchParams.get('sort') || ''
+    // pageIdx: +searchParams.get('pageIdx') || 0,
   }
   return filterBy
 }
@@ -96,6 +108,8 @@ function _createTodo(txt, importance, style) {
   return todo
 }
 
+// Trashcan -------------
+
 // Data Model:
 // const todo = {
 //     _id: "gZ6Nvy",
@@ -104,4 +118,13 @@ function _createTodo(txt, importance, style) {
 //     isDone: false,
 //     createdAt: 1711472269690,
 //     updatedAt: 1711472269690
+// }
+
+// function getFilterFromSearchParams(searchParams) {
+//   const defaultFilter = getDefaultFilter()
+//   const filterBy = {}
+//   for (const field in defaultFilter) {
+//     filterBy[field] = searchParams.get(field) || ''
+//   }
+//   return filterBy
 // }

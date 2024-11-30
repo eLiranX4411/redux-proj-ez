@@ -9,7 +9,7 @@ import { showErrorMsg } from '../services/event-bus.service.js'
 
 export function AppHeader() {
   const navigate = useNavigate()
-  const user = useSelector((state) => state.loggedInUser)
+  const user = useSelector((state) => state.userModule.loggedInUser)
 
   function onLogout() {
     userService

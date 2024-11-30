@@ -5,7 +5,7 @@ const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 
 export function UserDetails() {
-  const user = useSelector((state) => state.loggedInUser)
+  const user = useSelector((state) => state.userModule.loggedInUser)
   const [userDetails, setUserDetails] = useState(null)
 
   useEffect(() => {
